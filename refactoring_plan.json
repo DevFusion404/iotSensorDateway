@@ -1,0 +1,232 @@
+{
+  "repository": "iot_sensor_gateway",
+  "language": "c",
+  "version": "1.0",
+  "plans": [
+    {
+      "plan_id": "plan_antenna_pi",
+      "target": "src/antenna_geometry.c",
+      "smell": "MagicNumber",
+      "description": "Extract antenna spatial coverage literal 3.14159 into constant PI_VALUE",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Introduce Constant",
+          "target": {
+            "file": "src/antenna_geometry.c",
+            "function": "calculate_antenna_coverage",
+            "lines": [4, 4]
+          },
+          "parameters": {
+            "source_file": "src/antenna_geometry.c",
+            "constant_name": "PI_VALUE",
+            "literal_value": 3.14159,
+            "source_line": 4
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_packet_strcpy",
+      "target": "src/packet_receiver.c",
+      "smell": "UnsafeFunctionCall",
+      "description": "Replace unbounded strcpy() buffer copy with bounded strncpy()",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Replace Unsafe Function",
+          "target": {
+            "file": "src/packet_receiver.c",
+            "function": "receive_packet_payload",
+            "lines": [6, 6]
+          },
+          "parameters": {
+            "source_file": "src/packet_receiver.c",
+            "unsafe_function": "strcpy",
+            "safe_alternative": "strncpy",
+            "source_line": 6
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_logger_sprintf",
+      "target": "src/telemetry_logger.c",
+      "smell": "UnsafeFunctionCall",
+      "description": "Replace vulnerable sprintf() logging call with bounded snprintf()",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Replace Unsafe Function",
+          "target": {
+            "file": "src/telemetry_logger.c",
+            "function": "log_telemetry_event",
+            "lines": [5, 5]
+          },
+          "parameters": {
+            "source_file": "src/telemetry_logger.c",
+            "unsafe_function": "sprintf",
+            "safe_alternative": "snprintf",
+            "source_line": 5
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_ring_buffer_size",
+      "target": "src/ring_buffer.c",
+      "smell": "MagicNumber",
+      "description": "Extract raw ring buffer byte capacity 1024 into constant BUFFER_SIZE",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Introduce Constant",
+          "target": {
+            "file": "src/ring_buffer.c",
+            "function": "configure_ring_buffer",
+            "lines": [4, 4]
+          },
+          "parameters": {
+            "source_file": "src/ring_buffer.c",
+            "constant_name": "BUFFER_SIZE",
+            "literal_value": 1024,
+            "source_line": 4
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_filter_rename",
+      "target": "src/signal_filter.c",
+      "smell": "CrypticNaming",
+      "description": "Rename cryptic signal function calc_dat to clear domain name calculate_formatted_data",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Rename Symbol",
+          "target": {
+            "file": "src/signal_filter.c",
+            "function": "calc_dat"
+          },
+          "parameters": {
+            "source_file": "src/signal_filter.c",
+            "old_name": "calc_dat",
+            "new_name": "calculate_formatted_data"
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_detector_threshold",
+      "target": "src/threshold_detector.c",
+      "smell": "MagicNumber",
+      "description": "Extract temperature alarm threshold 1000 into constant MAX_DISCOUNT_THRESHOLD",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Introduce Constant",
+          "target": {
+            "file": "src/threshold_detector.c",
+            "function": "evaluate_temperature_spike",
+            "lines": [4, 4]
+          },
+          "parameters": {
+            "source_file": "src/threshold_detector.c",
+            "constant_name": "MAX_DISCOUNT_THRESHOLD",
+            "literal_value": 1000,
+            "source_line": 4
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_counter_encapsulate",
+      "target": "src/packet_counter.c",
+      "smell": "GlobalStateMutation",
+      "description": "Encapsulate naked global counter with accessor functions get_global_counter and set_global_counter",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Encapsulate Variable",
+          "target": {
+            "file": "src/packet_counter.c",
+            "variable": "global_counter"
+          },
+          "parameters": {
+            "source_file": "src/packet_counter.c",
+            "variable_name": "global_counter",
+            "getter_name": "get_global_counter",
+            "setter_name": "set_global_counter"
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_watchdog_constant",
+      "target": "src/watchdog_timer.c",
+      "smell": "MagicNumber",
+      "description": "Extract default timeout seconds literal 30 into constant DEFAULT_TIMEOUT_SEC",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Introduce Constant",
+          "target": {
+            "file": "src/watchdog_timer.c",
+            "function": "resolve_watchdog_timeout",
+            "lines": [5, 5]
+          },
+          "parameters": {
+            "source_file": "src/watchdog_timer.c",
+            "constant_name": "DEFAULT_TIMEOUT_SEC",
+            "literal_value": 30,
+            "source_line": 5
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_payload_bound_constant",
+      "target": "src/payload_validator.c",
+      "smell": "MagicNumber",
+      "description": "Extract maximum array buffer boundary literal 256 into constant MAX_ARRAY_SIZE",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Introduce Constant",
+          "target": {
+            "file": "src/payload_validator.c",
+            "function": "validate_payload_boundary",
+            "lines": [4, 4]
+          },
+          "parameters": {
+            "source_file": "src/payload_validator.c",
+            "constant_name": "MAX_ARRAY_SIZE",
+            "literal_value": 256,
+            "source_line": 4
+          }
+        }
+      ]
+    },
+    {
+      "plan_id": "plan_sensor_rename",
+      "target": "src/sensor_reader.c",
+      "smell": "CrypticNaming",
+      "description": "Rename cryptic sensor sampling symbol read_snr to read_sensor_data",
+      "steps": [
+        {
+          "step_id": 1,
+          "refactoring": "Rename Symbol",
+          "target": {
+            "file": "src/sensor_reader.c",
+            "function": "read_snr"
+          },
+          "parameters": {
+            "source_file": "src/sensor_reader.c",
+            "old_name": "read_snr",
+            "new_name": "read_sensor_data"
+          }
+        }
+      ]
+    }
+  ]
+}
